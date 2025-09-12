@@ -7,6 +7,7 @@ use std::{
     process::exit,
 };
 
+mod error;
 mod lexer;
 
 fn main() -> Result<()> {
