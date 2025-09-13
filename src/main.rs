@@ -31,6 +31,14 @@ fn main() -> Result<()> {
     Ok(())
 }
 
+fn error(line: u32, message: &str) {
+    report(line, "", message);
+}
+
+fn report(line: u32, at: &str, message: &str) {
+    println!("[line {line}] Error {at}: {message}");
+}
+
 fn run_prompt() -> Result<()> {
     let mut line = String::new();
     loop {
@@ -53,7 +61,7 @@ fn run_file(src_path: &Path) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn run(code: &str) -> Result<()> {
+fn run(code: &str) -> Result<Option<Vec<FrontendError>>> {
     println!("{code}");
     Ok(())
 }
