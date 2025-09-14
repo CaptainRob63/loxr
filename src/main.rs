@@ -1,4 +1,5 @@
-use anyhow::Result;
+use crate::error::FrontendError;
+use anyhow::{Error, Result};
 use std::{
     env,
     fs::read_to_string,
@@ -31,14 +32,6 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn error(line: u32, message: &str) {
-    report(line, "", message);
-}
-
-fn report(line: u32, at: &str, message: &str) {
-    println!("[line {line}] Error {at}: {message}");
-}
-
 fn run_prompt() -> Result<()> {
     let mut line = String::new();
     loop {
@@ -47,21 +40,28 @@ fn run_prompt() -> Result<()> {
         if io::stdin().read_line(&mut line)? == 0 {
             break;
         }
-        run(line.trim_end())?;
+        let frontend_errors = run(line.trim_end())?;
+        for error in frontend_errors {
+            error.report();
+        }
         line.clear();
     }
 
     Ok(())
 }
 
-fn run_file(src_path: &Path) -> anyhow::Result<()> {
+fn run_file(src_path: &Path) -> Result<()> {
     let code = read_to_string(src_path)?;
-    run(&code)?;
+    let frontend_errors = run(&code)?;
 
+    for error in frontend_errors {
+        error.report();
+    }
     Ok(())
 }
 
-fn run(code: &str) -> Result<Option<Vec<FrontendError>>> {
+fn run(code: &str) -> Result<Vec<FrontendError>> {
+    let mut errors: Vec<FrontendError> = vec![];
     println!("{code}");
-    Ok(())
+    Ok(errors)
 }
