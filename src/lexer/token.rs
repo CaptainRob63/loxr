@@ -1,4 +1,18 @@
-pub struct Token {}
+pub struct Token {
+    token_type: TokenType,
+    string: String,
+    line: u32,
+}
+
+impl Token {
+    fn new(token_type: TokenType, string: &str, line: u32) -> Token {
+        Token {
+            token_type,
+            string: String::from(string),
+            line,
+        }
+    }
+}
 
 #[allow(non_camel_case_types, clippy::upper_case_acronyms)]
 enum TokenType {
@@ -25,9 +39,9 @@ enum TokenType {
     LESS_EQUAL,
 
     // Literals.
-    IDENTIFIER,
-    STRING,
-    NUMBER,
+    IDENTIFIER(String),
+    STRING(String),
+    NUMBER(f64),
 
     // Keywords.
     AND,
