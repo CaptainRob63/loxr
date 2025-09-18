@@ -1,11 +1,11 @@
 pub struct Token {
     token_type: TokenType,
     string: String,
-    line: u32,
+    line: usize,
 }
 
 impl Token {
-    fn new(token_type: TokenType, string: &str, line: u32) -> Token {
+    pub fn new(token_type: TokenType, string: &str, line: usize) -> Token {
         Token {
             token_type,
             string: String::from(string),
@@ -15,7 +15,7 @@ impl Token {
 }
 
 #[allow(non_camel_case_types, clippy::upper_case_acronyms)]
-enum TokenType {
+pub enum TokenType {
     LEFT_PAREN,
     RIGHT_PAREN,
     LEFT_BRACE,

@@ -1,12 +1,12 @@
 pub struct FrontendError {
-    line: u32,
+    line: usize,
     at: String,
     message: String,
     generated_by: String,
 }
 
 impl FrontendError {
-    pub fn new(line: u32, at: &str, message: &str, generated_by: &str) -> Self {
+    pub fn new(line: usize, at: &str, message: &str, generated_by: &str) -> Self {
         FrontendError {
             line,
             at: at.to_string(),
