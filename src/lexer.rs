@@ -7,6 +7,7 @@ use token::{Token, TokenType::*};
 pub struct Lexer {
     code: String,
     tokens: Vec<Token>,
+    frontend_errors: Vec<FrontendError>,
     start: usize,
     current: usize,
     line: usize,
@@ -17,10 +18,21 @@ impl Lexer {
         Lexer {
             code: String::from(code),
             tokens: Vec::new(),
+            frontend_errors: Vec::new(),
             start: 0,
             current: 0,
             line: 1,
         }
+    }
+
+    pub fn lex(&mut self) {
+        while !self.is_at_end() {
+            self.scan_token();
+        }
+    }
+
+    pub fn tokens(&self) -> &[Token] {
+        &self.tokens
     }
 
     fn advance(&mut self) -> char {
@@ -55,6 +67,7 @@ impl Lexer {
     fn scan_token(&mut self) {
         let c = self.advance();
         match c {
+            '\n' => self.line += 1,
             '(' => self.add_token(LEFT_PAREN),
             ')' => self.add_token(RIGHT_PAREN),
             '{' => self.add_token(LEFT_BRACE),
@@ -66,18 +79,17 @@ impl Lexer {
             ';' => self.add_token(SEMICOLON),
             '*' => self.add_token(STAR),
 
-            _ => {} // TODO
+            _ => {
+                let ferror =
+                    FrontendError::new(self.line, "", "unknown token!", "lexer.scan_token");
+                self.frontend_errors.push(ferror);
+            }
         }
+
+        self.start = self.current;
     }
 
     fn is_at_end(&self) -> bool {
         self.current >= self.code.len()
     }
-}
-
-pub fn lex(code: &str) -> Result<Vec<FrontendError>> {
-    let ferrors: Vec<FrontendError> = vec![];
-    let lexer = Lexer::new(code);
-
-    Ok(ferrors)
 }

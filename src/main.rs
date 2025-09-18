@@ -1,4 +1,4 @@
-use crate::error::FrontendError;
+use crate::{error::FrontendError, lexer::Lexer};
 use anyhow::{Error, Result};
 use std::{
     env,
@@ -62,6 +62,11 @@ fn run_file(src_path: &Path) -> Result<()> {
 
 fn run(code: &str) -> Result<Vec<FrontendError>> {
     let mut errors: Vec<FrontendError> = vec![];
-    println!("{code}");
+    let mut lexer = Lexer::new(code);
+    lexer.lex();
+
+    for token in lexer.tokens() {
+        println!("{:?}", token)
+    }
     Ok(errors)
 }
