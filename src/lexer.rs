@@ -39,7 +39,7 @@ impl Lexer {
         self.current += 1;
         self.code
             .chars()
-            .nth(self.current - 1)
+            .nth(self.current - 1)  // TODO: as_ref()[] ?
             .expect("lexer indexed out of code string!")
     }
 
