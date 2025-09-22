@@ -4,5 +4,13 @@
 =>==>==>>>=>=>=>>==>===>>=>>=>=>
 =============>
 !=!=!==!=!!=!!=!=!!=!!
+// asd asd this is a comment
+/=++/*// asd asd 
+"this is a string literal" // and this is a comment
+
+132.1311 "and a number"
+
+indentifier = another_identifier
+and or if else
 
 
