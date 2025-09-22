@@ -68,6 +68,7 @@ impl Lexer {
         let c = self.advance();
         match c {
             '\n' => self.line += 1,
+
             '(' => self.add_token(LEFT_PAREN),
             ')' => self.add_token(RIGHT_PAREN),
             '{' => self.add_token(LEFT_BRACE),
@@ -78,6 +79,42 @@ impl Lexer {
             '+' => self.add_token(PLUS),
             ';' => self.add_token(SEMICOLON),
             '*' => self.add_token(STAR),
+
+            '!' => {
+                let tok = if self.match_adv('=') {
+                    BANG_EQUAL
+                } else {
+                    BANG
+                };
+                self.add_token(tok);
+            }
+
+            '=' => {
+                let tok = if self.match_adv('=') {
+                    EQUAL_EQUAL
+                } else {
+                    EQUAL
+                };
+                self.add_token(tok);
+            }
+
+            '<' => {
+                let tok = if self.match_adv('=') {
+                    LESS_EQUAL
+                } else {
+                    LESS
+                };
+                self.add_token(tok);
+            }
+
+            '>' => {
+                let tok = if self.match_adv('=') {
+                    GREATER_EQUAL
+                } else {
+                    GREATER
+                };
+                self.add_token(tok);
+            }
 
             _ => {
                 let ferror =
